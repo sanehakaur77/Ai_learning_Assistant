@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Upload, Trash2, FileText, X, AlertTriangle } from "lucide-react";
+import {
+  Plus,
+  Upload,
+  Trash2,
+  FileText,
+  X,
+  AlertTriangle,
+  Bell,
+  User,
+} from "lucide-react";
 import documentService from "../../services/documentService";
 import Spinner from "../../components/common/Spinner";
 import toast from "react-hot-toast";
@@ -123,7 +132,7 @@ const DocumentListPage = () => {
             </p>
             <button
               onClick={() => setIsUploadModalOpen(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-emerald-500/25 active:scale-95"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#10B981] hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all shadow-lg active:scale-95"
             >
               <Plus className="w-5 h-5" />
               Upload First Document
@@ -134,7 +143,7 @@ const DocumentListPage = () => {
     }
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
         {documents.map((doc) => (
           <DocumentCard
             key={doc._id}
@@ -147,47 +156,42 @@ const DocumentListPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
-      {/* Sidebar - Assuming it handles its own mobile visibility via isSidebarOpen */}
+    <div className="flex min-h-screen bg-white overflow-hidden">
+      {/* 1. Sidebar Component */}
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-      {/* Main Content wrapper */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        {/* Pattern Background */}
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-[length:16px_16px] opacity-40 pointer-events-none" />
-
-        {/* Scrollable Area */}
-        <div className="flex-1 overflow-y-auto relative p-6 md:p-10">
-          <div className="max-w-7xl mx-auto">
-            {/* Header Section */}
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+      {/* 2. Main Content - md:ml-64 shifts it to the right of the Sidebar */}
+      <div className="flex-1 flex flex-col h-screen overflow-hidden md:ml-64 transition-all duration-300">
+        {/* Scrollable Content Area */}
+        <main className="flex-1 overflow-y-auto p-10 relative">
+          <div className="max-w-[1400px]">
+            {/* Header Content */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
               <div>
-                <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+                <h1 className="text-[28px] font-bold text-slate-900 tracking-tight">
                   My Documents
                 </h1>
-                <p className="text-slate-500 mt-1">
+                <p className="text-slate-500 text-[15px] mt-1">
                   Manage and organize your learning materials
                 </p>
               </div>
 
-              {documents.length > 0 && (
-                <Button
-                  onClick={() => setIsUploadModalOpen(true)}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md"
-                >
-                  <Plus className="w-4 h-4 mr-2" strokeWidth={2.5} />
-                  Upload Document
-                </Button>
-              )}
-            </header>
+              <button
+                onClick={() => setIsUploadModalOpen(true)}
+                className="bg-[#10B981] hover:bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-sm"
+              >
+                <Plus size={20} strokeWidth={3} />
+                Upload Document
+              </button>
+            </div>
 
             {/* Grid Content */}
             {renderContent()}
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
 
-      {/* Upload Modal */}
+      {/* Existing Modal Logic (Remains unchanged) */}
       {isUploadModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div
@@ -202,8 +206,7 @@ const DocumentListPage = () => {
               >
                 <X className="w-6 h-6" />
               </button>
-
-              <div className="mb-8">
+              <div className="mb-2">
                 <h2 className="text-2xl font-bold text-slate-900">
                   Upload Document
                 </h2>
@@ -211,7 +214,6 @@ const DocumentListPage = () => {
                   PDF files only, max 10MB
                 </p>
               </div>
-
               <form onSubmit={handleUpload} className="space-y-6">
                 <div>
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">
@@ -226,7 +228,6 @@ const DocumentListPage = () => {
                     placeholder="e.g. Chemistry Notes"
                   />
                 </div>
-
                 <div>
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">
                     File Selection
@@ -254,7 +255,6 @@ const DocumentListPage = () => {
                     </div>
                   </div>
                 </div>
-
                 <div className="flex gap-3 pt-2">
                   <button
                     type="button"
@@ -266,7 +266,7 @@ const DocumentListPage = () => {
                   <button
                     type="submit"
                     disabled={uploading}
-                    className="flex-1 h-12 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-600 disabled:opacity-50 transition shadow-lg shadow-emerald-500/20"
+                    className="flex-1 h-12 rounded-xl bg-[#10B981] text-white font-semibold hover:bg-emerald-600 disabled:opacity-50 transition shadow-lg shadow-emerald-500/20"
                   >
                     {uploading ? "Uploading..." : "Confirm Upload"}
                   </button>
@@ -277,7 +277,6 @@ const DocumentListPage = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div
@@ -285,7 +284,7 @@ const DocumentListPage = () => {
             onClick={() => setIsDeleteModalOpen(false)}
           />
           <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl relative p-6 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-4 ">
               <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-6 h-6" />
               </div>
@@ -298,12 +297,10 @@ const DocumentListPage = () => {
                 </p>
               </div>
             </div>
-
             <p className="text-slate-700 mb-6">
               Are you sure you want to delete{" "}
               <span className="font-semibold">"{selectedDoc?.title}"</span>?
             </p>
-
             <div className="flex gap-3">
               <button
                 onClick={() => setIsDeleteModalOpen(false)}

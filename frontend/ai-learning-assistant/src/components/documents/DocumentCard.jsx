@@ -6,7 +6,7 @@ import moment from "moment";
 const formatFileSize = (bytes) => {
   if (!bytes) return "N/A";
 
-  const units = ["B", "KB", "MB", "GB", "TB"];
+  const units = ["B", "KB", "MB", "GB"];
   let size = bytes;
   let unitIndex = 0;
 
@@ -21,66 +21,76 @@ const formatFileSize = (bytes) => {
 const DocumentCard = ({ document, onDelete }) => {
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate(`/documents/${document.id}`);
-  };
-
-  const handleDelete = (e) => {
-    e.stopPropagation();
-    onDelete(document);
-  };
-
   return (
     <div
-      onClick={handleNavigate}
-      className="group relative bg-white rounded-lg border border-slate-200 
-      p-8 w-full max-w-[350px] shadow-sm hover:shadow-md 
-      transition-all duration-200 cursor-pointer
-      hover:bg-gradient-to-b hover:from-emerald-50 hover:to-white"
+      onClick={() => navigate(`/documents/${document._id}`)}
+      className="
+      group
+      relative
+      bg-white
+      border border-slate-200
+      rounded-xl
+      p-4
+      w-full
+      max-w-[240px]
+      shadow-sm
+      hover:shadow-md
+      hover:border-emerald-300
+      transition
+      cursor-pointer
+      flex flex-col
+      "
     >
-      <div className="flex items-start justify-between mb-2">
-        <div className="w-9 h-9 rounded-md bg-emerald-500/10 flex items-center justify-center">
-          <FileText className="w-4 h-4 text-emerald-600" strokeWidth={2} />
+      {/* Top */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+          <FileText className="w-4 h-4 text-emerald-600" />
         </div>
 
         <button
-          onClick={handleDelete}
-          className="opacity-0 group-hover:opacity-100 transition text-slate-400 hover:text-red-500"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(document);
+          }}
+          className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500"
         >
-          <Trash2 className="w-4 h-4" strokeWidth={2} />
+          <Trash2 className="w-4 h-4" />
         </button>
       </div>
 
+      {/* Title */}
       <h3
-        className="text-sm font-semibold text-slate-900 mb-1 truncate"
+        className="text-sm font-semibold text-slate-900 line-clamp-2 mb-1"
         title={document.title}
       >
         {document.title}
       </h3>
 
-      <p className="text-xs text-slate-500 mb-2">
+      {/* Size */}
+      <p className="text-xs text-slate-500 mb-3">
         {formatFileSize(document.fileSize)}
       </p>
 
-      <div className="flex flex-wrap gap-1 mb-2">
+      {/* Stats */}
+      <div className="flex gap-2 mb-3 flex-wrap">
         {document.flashcardCount !== undefined && (
-          <div className="flex items-center gap-1 bg-purple-100 text-purple-700 text-[10px] font-medium px-2 py-0.5 rounded-full">
-            <BookOpen className="w-3 h-3" strokeWidth={2} />
+          <div className="flex items-center gap-1 text-[10px] bg-purple-50 text-purple-700 px-2 py-1 rounded">
+            <BookOpen className="w-3 h-3" />
             {document.flashcardCount}
           </div>
         )}
+
         {document.quizCount !== undefined && (
-          <div className="flex items-center gap-1 bg-emerald-100 text-emerald-700 text-[10px] font-medium px-2 py-0.5 rounded-full">
-            <BrainCircuit className="w-3 h-3" strokeWidth={2} />
+          <div className="flex items-center gap-1 text-[10px] bg-emerald-50 text-emerald-700 px-2 py-1 rounded">
+            <BrainCircuit className="w-3 h-3" />
             {document.quizCount}
           </div>
         )}
       </div>
 
-      <div className="border-t border-slate-100 my-1"></div>
-
-      <div className="flex items-center text-[11px] text-slate-500 gap-1">
-        <Clock className="w-3 h-3" strokeWidth={2} />
+      {/* Footer */}
+      <div className="pt-2 border-t border-slate-100 flex items-center text-[10px] text-slate-400 gap-1">
+        <Clock className="w-3 h-3" />
         {moment(document.createdAt).fromNow()}
       </div>
     </div>
@@ -88,7 +98,3 @@ const DocumentCard = ({ document, onDelete }) => {
 };
 
 export default DocumentCard;
-
-// const [isSidebarOpen, setIsSidebarOpen] = useState(false); // ⬅️ for mobile toggle
-// const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-// <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />;
