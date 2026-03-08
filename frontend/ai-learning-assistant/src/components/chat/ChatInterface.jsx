@@ -192,7 +192,7 @@ const ChatInterface = ({ documentId }) => {
         {loading && (
           <div className="flex items-center gap-3 mb-6">
             <div className="w-9 h-9 rounded-full bg-teal-600 flex items-center justify-center text-white">
-              <Bot size={18} className="animate-spin-slow" />
+              <Sparkle size={18} className="animate-spin-slow" />
             </div>
             <div className="px-5 py-3 bg-white border border-slate-200 rounded-2xl rounded-tl-none">
               <div className="flex gap-1.5">

@@ -7,13 +7,14 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 import PageHeader from "../../components/common/PageHeader";
 import Tabs from "../../components/common/Tabs";
 import ChatInterface from "../../components/chat/ChatInterface";
-
+import AIActions from "../ai/AiActions";
+import FlashcardManager from "../Flashcards/FlashCardManager";
 const DocumentDetailPage = () => {
   const { id } = useParams();
   const [document, setDocument] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("Content");
-  console.log(id);
+
   useEffect(() => {
     const fetchDocumentDetails = async () => {
       try {
@@ -30,7 +31,6 @@ const DocumentDetailPage = () => {
     fetchDocumentDetails();
   }, [id]);
 
-  // Helper function to get the full PDF URL
   const getPdfUrl = () => {
     if (!document?.data?.filePath) return null;
 
@@ -40,44 +40,50 @@ const DocumentDetailPage = () => {
       return filePath;
     }
 
-    const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+    const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8082";
     return `${baseUrl}${filePath.startsWith("/") ? "" : "/"}${filePath}`;
   };
 
   const renderContent = () => {
-    if (loading) {
-      return <Spinner />;
-    }
+    if (loading) return <Spinner />;
 
-    if (!document || !document.data || !document.data.filePath) {
-      return <div className="">PDF not available.</div>;
+    if (!document?.data?.filePath) {
+      return (
+        <div className="text-center py-20 text-gray-500 text-lg">
+          PDF not available
+        </div>
+      );
     }
 
     const pdfUrl = getPdfUrl();
 
     return (
-      <div className="">
-        <div className="">
-          <span className="">Document Viewer</span>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        {/* Top Bar */}
+        <div className="flex justify-between items-center mb-4 border-b pb-3">
+          <span className="font-semibold text-gray-700 text-lg">
+            Document Viewer
+          </span>
+
           <a
             href={pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className=""
+            className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
           >
             <ExternalLink size={16} />
             Open in new tab
           </a>
         </div>
-        <div className="">
+
+        {/* PDF Viewer */}
+        <div className="w-full h-[75vh] rounded-lg overflow-hidden border">
           <iframe
             src={pdfUrl}
-            className=""
+            className="w-full h-full"
             title="PDF Viewer"
             frameBorder="0"
-            style={{
-              colorScheme: "light",
-            }}
+            style={{ colorScheme: "light" }}
           />
         </div>
       </div>
@@ -85,19 +91,27 @@ const DocumentDetailPage = () => {
   };
 
   const renderChat = () => {
-    return <ChatInterface documentId={id} />;
+    return (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <ChatInterface documentId={id} />
+      </div>
+    );
   };
 
   const renderAIActions = () => {
-    return "renderAIAction";
+    return <AIActions documentId={id} />;
   };
 
   const renderFlashcardsTab = () => {
-    return "renderFlashcardsTab";
+    return <FlashcardManager documentId={id} />;
   };
 
   const renderQuizzesTab = () => {
-    return "renderQuizzesTab";
+    return (
+      <div className="bg-white p-6 rounded-xl shadow-sm border text-gray-600">
+        Quiz feature coming soon...
+      </div>
+    );
   };
 
   const tabs = [
@@ -108,24 +122,36 @@ const DocumentDetailPage = () => {
     { name: "Quizzes", label: "Quizzes", content: renderQuizzesTab() },
   ];
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
   if (!document) {
-    return <div className="">Document not found.</div>;
+    return (
+      <div className="text-center py-20 text-gray-500 text-lg">
+        Document not found
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="p-6">
+      {/* Back Button */}
       <div className="mb-4">
-        <Link to="/documents" className="inline-flex items-center gap-2 text-">
+        <Link
+          to="/documents"
+          className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
+        >
           <ArrowLeft size={16} />
           Back to Documents
         </Link>
       </div>
+
+      {/* Page Header */}
       <PageHeader title={document.data.title} />
-      <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      {/* Tabs */}
+      <div className="mt-6">
+        <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
     </div>
   );
 };
