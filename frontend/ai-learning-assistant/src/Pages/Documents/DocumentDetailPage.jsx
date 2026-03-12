@@ -10,6 +10,7 @@ import ChatInterface from "../../components/chat/ChatInterface";
 import AIActions from "../ai/AiActions";
 import FlashcardManager from "../Flashcards/FlashCardManager";
 import QuizManager from "../Quizzes/QuizManager";
+import Header from "../../components/layout/Header";
 const DocumentDetailPage = () => {
   const { id } = useParams();
   const [document, setDocument] = useState(null);
@@ -130,26 +131,29 @@ const DocumentDetailPage = () => {
   }
 
   return (
-    <div className="p-6">
-      {/* Back Button */}
-      <div className="mb-4">
-        <Link
-          to="/documents"
-          className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
-        >
-          <ArrowLeft size={16} />
-          Back to Documents
-        </Link>
-      </div>
+    <>
+      <Header />
+      <div className="p-6">
+        {/* Back Button */}
+        <div className="mb-4">
+          <Link
+            to="/documents"
+            className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
+          >
+            <ArrowLeft size={16} />
+            Back to Documents
+          </Link>
+        </div>
 
-      {/* Page Header */}
-      <PageHeader title={document.data.title} />
+        {/* Page Header */}
+        <PageHeader title={document.data.title} />
 
-      {/* Tabs */}
-      <div className="mt-6">
-        <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+        {/* Tabs */}
+        <div className="mt-6">
+          <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

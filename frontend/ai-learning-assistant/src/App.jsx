@@ -106,7 +106,6 @@ const App = () => {
 
   return (
     <>
-      <Header></Header>
       <Router>
         <Routes>
           <Route
@@ -133,6 +132,7 @@ const App = () => {
           <Route path="/quizzes/:quizId" element={<QuizTakePage />} />
           <Route path="/quizzes/:quizId/results" element={<QuizResultPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFoundPage />} />

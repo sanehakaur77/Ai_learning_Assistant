@@ -6,7 +6,7 @@ import PageHeader from "../../components/common/PageHeader";
 import Spinner from "../../components/common/Spinner";
 import toast from "react-hot-toast";
 import Button from "../../components/common/Button";
-
+import Header from "../../components/layout/Header";
 const QuizTakePage = () => {
   const { quizId } = useParams();
   const navigate = useNavigate();
@@ -112,115 +112,119 @@ const QuizTakePage = () => {
   /* ---------------- UI ---------------- */
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <PageHeader
-        title={quiz.title}
-        subtitle={`Question ${currentQuestionIndex + 1} of ${quiz.questions.length}`}
-      />
-
-      {/* Progress Bar */}
-
-      <div className="w-full bg-gray-200 rounded-full h-2 mt-6">
-        <div
-          className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
-          style={{
-            width: `${(answeredCount / quiz.questions.length) * 100}%`,
-          }}
+    <>
+      <Header />
+      <div className="max-w-3xl mx-auto px-4 py-10">
+        <PageHeader
+          title={quiz.title}
+          subtitle={`Question ${currentQuestionIndex + 1} of ${quiz.questions.length}`}
         />
-      </div>
 
-      {/* Question Card */}
+        {/* Progress Bar */}
 
-      <div className="mt-8 bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">
-          {currentQuestion.question}
-        </h2>
+        <div className="w-full bg-gray-200 rounded-full h-2 mt-6">
+          <div
+            className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+            style={{
+              width: `${(answeredCount / quiz.questions.length) * 100}%`,
+            }}
+          />
+        </div>
 
-        {/* Options */}
+        {/* Question Card */}
 
-        <div className="space-y-4">
-          {currentQuestion.options.map((option, index) => {
-            const isSelected = selectedAnswers[currentQuestionIndex] === index;
+        <div className="mt-8 bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">
+            {currentQuestion.question}
+          </h2>
 
-            return (
-              <label
-                key={index}
-                className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all
+          {/* Options */}
+
+          <div className="space-y-4">
+            {currentQuestion.options.map((option, index) => {
+              const isSelected =
+                selectedAnswers[currentQuestionIndex] === index;
+
+              return (
+                <label
+                  key={index}
+                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all
                 ${
                   isSelected
                     ? "border-emerald-500 bg-emerald-50"
                     : "border-gray-200 hover:border-emerald-400 hover:bg-gray-50"
                 }`}
-              >
-                <input
-                  type="radio"
-                  name={`question-${currentQuestionIndex}`}
-                  checked={isSelected}
-                  onChange={() =>
-                    handleOptionChange(currentQuestionIndex, index)
-                  }
-                  className="accent-emerald-500"
-                />
+                >
+                  <input
+                    type="radio"
+                    name={`question-${currentQuestionIndex}`}
+                    checked={isSelected}
+                    onChange={() =>
+                      handleOptionChange(currentQuestionIndex, index)
+                    }
+                    className="accent-emerald-500"
+                  />
 
-                <span className="text-gray-700">{option}</span>
-              </label>
-            );
-          })}
+                  <span className="text-gray-700">{option}</span>
+                </label>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* Navigation Buttons */}
+        {/* Navigation Buttons */}
 
-      <div className="flex items-center justify-between mt-10">
-        <Button
-          onClick={handlePreviousQuestion}
-          disabled={currentQuestionIndex === 0 || submitting}
-          variant="secondary"
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl"
-        >
-          <ChevronLeft className="w-4 h-4" strokeWidth={2.5} />
-          Previous
-        </Button>
+        <div className="flex items-center justify-between mt-10">
+          <Button
+            onClick={handlePreviousQuestion}
+            disabled={currentQuestionIndex === 0 || submitting}
+            variant="secondary"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl"
+          >
+            <ChevronLeft className="w-4 h-4" strokeWidth={2.5} />
+            Previous
+          </Button>
 
-        {currentQuestionIndex === quiz.questions.length - 1 ? (
-          <button
-            onClick={handleSubmitQuiz}
-            disabled={submitting}
-            className="flex items-center gap-2 px-6 py-2.5 rounded-xl 
+          {currentQuestionIndex === quiz.questions.length - 1 ? (
+            <button
+              onClick={handleSubmitQuiz}
+              disabled={submitting}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl 
             bg-emerald-600 text-white font-medium shadow-md
             hover:bg-emerald-700 hover:shadow-lg
             transition-all duration-300 disabled:opacity-60"
-          >
-            {submitting ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Submitting...
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="w-4 h-4" strokeWidth={2.5} />
-                Submit Quiz
-              </>
-            )}
-          </button>
-        ) : (
-          <Button
-            onClick={handleNextQuestion}
-            disabled={submitting}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl"
-          >
-            Next
-            <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
-          </Button>
-        )}
-      </div>
+            >
+              {submitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-4 h-4" strokeWidth={2.5} />
+                  Submit Quiz
+                </>
+              )}
+            </button>
+          ) : (
+            <Button
+              onClick={handleNextQuestion}
+              disabled={submitting}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl"
+            >
+              Next
+              <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
+            </Button>
+          )}
+        </div>
 
-      {/* Answer Counter */}
+        {/* Answer Counter */}
 
-      <div className="text-center mt-6 text-sm text-gray-500">
-        {answeredCount} / {quiz.questions.length} questions answered
+        <div className="text-center mt-6 text-sm text-gray-500">
+          {answeredCount} / {quiz.questions.length} questions answered
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

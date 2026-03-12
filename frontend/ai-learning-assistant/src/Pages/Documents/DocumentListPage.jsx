@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import Button from "../../components/common/Button";
 import DocumentCard from "../../components/documents/DocumentCard";
 import Sidebar from "../../components/layout/Sidebar";
+import Header from "../../components/layout/Header";
 
 const DocumentListPage = () => {
   const [documents, setDocuments] = useState([]);
@@ -156,170 +157,173 @@ const DocumentListPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-white overflow-hidden">
-      {/* 1. Sidebar Component */}
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+    <>
+      <Header></Header>
+      <div className="flex min-h-screen bg-white overflow-hidden">
+        {/* 1. Sidebar Component */}
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-      {/* 2. Main Content - md:ml-64 shifts it to the right of the Sidebar */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden md:ml-64 transition-all duration-300">
-        {/* Scrollable Content Area */}
-        <main className="flex-1 overflow-y-auto p-10 relative">
-          <div className="max-w-[1400px]">
-            {/* Header Content */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
-              <div>
-                <h1 className="text-[28px] font-bold text-slate-900 tracking-tight">
-                  My Documents
-                </h1>
-                <p className="text-slate-500 text-[15px] mt-1">
-                  Manage and organize your learning materials
-                </p>
-              </div>
-
-              <button
-                onClick={() => setIsUploadModalOpen(true)}
-                className="bg-[#10B981] hover:bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-sm"
-              >
-                <Plus size={20} strokeWidth={3} />
-                Upload Document
-              </button>
-            </div>
-
-            {/* Grid Content */}
-            {renderContent()}
-          </div>
-        </main>
-      </div>
-
-      {/* Existing Modal Logic (Remains unchanged) */}
-      {isUploadModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            onClick={() => setIsUploadModalOpen(false)}
-          />
-          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-200">
-            <div className="p-8">
-              <button
-                onClick={() => setIsUploadModalOpen(false)}
-                className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <div className="mb-2">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  Upload Document
-                </h2>
-                <p className="text-slate-500 text-sm mt-1">
-                  PDF files only, max 10MB
-                </p>
-              </div>
-              <form onSubmit={handleUpload} className="space-y-6">
+        {/* 2. Main Content - md:ml-64 shifts it to the right of the Sidebar */}
+        <div className="flex-1 flex flex-col h-screen overflow-hidden md:ml-64 transition-all duration-300">
+          {/* Scrollable Content Area */}
+          <main className="flex-1 overflow-y-auto p-10 relative">
+            <div className="max-w-[1400px]">
+              {/* Header Content */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">
-                    Document Title
-                  </label>
-                  <input
-                    type="text"
-                    value={uploadTitle}
-                    onChange={(e) => setUploadTitle(e.target.value)}
-                    required
-                    className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl bg-slate-50 focus:outline-none focus:border-emerald-500 focus:bg-white transition"
-                    placeholder="e.g. Chemistry Notes"
-                  />
+                  <h1 className="text-[28px] font-bold text-slate-900 tracking-tight">
+                    My Documents
+                  </h1>
+                  <p className="text-slate-500 text-[15px] mt-1">
+                    Manage and organize your learning materials
+                  </p>
                 </div>
-                <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">
-                    File Selection
-                  </label>
-                  <div className="relative border-2 border-dashed border-slate-200 rounded-2xl hover:border-emerald-400 transition-colors group">
+
+                <button
+                  onClick={() => setIsUploadModalOpen(true)}
+                  className="bg-[#10B981] hover:bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-sm"
+                >
+                  <Plus size={20} strokeWidth={3} />
+                  Upload Document
+                </button>
+              </div>
+
+              {/* Grid Content */}
+              {renderContent()}
+            </div>
+          </main>
+        </div>
+
+        {/* Existing Modal Logic (Remains unchanged) */}
+        {isUploadModalOpen && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+              onClick={() => setIsUploadModalOpen(false)}
+            />
+            <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="p-8">
+                <button
+                  onClick={() => setIsUploadModalOpen(false)}
+                  className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+                <div className="mb-2">
+                  <h2 className="text-2xl font-bold text-slate-900">
+                    Upload Document
+                  </h2>
+                  <p className="text-slate-500 text-sm mt-1">
+                    PDF files only, max 10MB
+                  </p>
+                </div>
+                <form onSubmit={handleUpload} className="space-y-6">
+                  <div>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">
+                      Document Title
+                    </label>
                     <input
-                      type="file"
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                      accept=".pdf"
-                      onChange={handleFileChange}
+                      type="text"
+                      value={uploadTitle}
+                      onChange={(e) => setUploadTitle(e.target.value)}
+                      required
+                      className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl bg-slate-50 focus:outline-none focus:border-emerald-500 focus:bg-white transition"
+                      placeholder="e.g. Chemistry Notes"
                     />
-                    <div className="flex flex-col items-center justify-center py-10 px-6 text-center">
-                      <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                        <Upload className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">
+                      File Selection
+                    </label>
+                    <div className="relative border-2 border-dashed border-slate-200 rounded-2xl hover:border-emerald-400 transition-colors group">
+                      <input
+                        type="file"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        accept=".pdf"
+                        onChange={handleFileChange}
+                      />
+                      <div className="flex flex-col items-center justify-center py-10 px-6 text-center">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                          <Upload className="w-6 h-6" />
+                        </div>
+                        <p className="text-sm font-medium text-slate-700">
+                          {uploadFile ? (
+                            <span className="text-emerald-600">
+                              {uploadFile.name}
+                            </span>
+                          ) : (
+                            "Click or drag PDF here"
+                          )}
+                        </p>
                       </div>
-                      <p className="text-sm font-medium text-slate-700">
-                        {uploadFile ? (
-                          <span className="text-emerald-600">
-                            {uploadFile.name}
-                          </span>
-                        ) : (
-                          "Click or drag PDF here"
-                        )}
-                      </p>
                     </div>
                   </div>
-                </div>
-                <div className="flex gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsUploadModalOpen(false)}
-                    className="flex-1 h-12 rounded-xl font-semibold text-slate-600 hover:bg-slate-100 transition"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={uploading}
-                    className="flex-1 h-12 rounded-xl bg-[#10B981] text-white font-semibold hover:bg-emerald-600 disabled:opacity-50 transition shadow-lg shadow-emerald-500/20"
-                  >
-                    {uploading ? "Uploading..." : "Confirm Upload"}
-                  </button>
-                </div>
-              </form>
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsUploadModalOpen(false)}
+                      className="flex-1 h-12 rounded-xl font-semibold text-slate-600 hover:bg-slate-100 transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={uploading}
+                      className="flex-1 h-12 rounded-xl bg-[#10B981] text-white font-semibold hover:bg-emerald-600 disabled:opacity-50 transition shadow-lg shadow-emerald-500/20"
+                    >
+                      {uploading ? "Uploading..." : "Confirm Upload"}
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            onClick={() => setIsDeleteModalOpen(false)}
-          />
-          <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl relative p-6 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center gap-4 ">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-6 h-6" />
+        {isDeleteModalOpen && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+              onClick={() => setIsDeleteModalOpen(false)}
+            />
+            <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl relative p-6 animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex items-center gap-4 ">
+                <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                  <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">
+                    Delete Document
+                  </h3>
+                  <p className="text-slate-500 text-sm">
+                    This action cannot be undone.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900">
-                  Delete Document
-                </h3>
-                <p className="text-slate-500 text-sm">
-                  This action cannot be undone.
-                </p>
+              <p className="text-slate-700 mb-6">
+                Are you sure you want to delete{" "}
+                <span className="font-semibold">"{selectedDoc?.title}"</span>?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setIsDeleteModalOpen(false)}
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-medium hover:bg-slate-50 transition"
+                >
+                  Keep it
+                </button>
+                <button
+                  onClick={handleConfirmDelete}
+                  disabled={deleting}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition disabled:opacity-50"
+                >
+                  {deleting ? "Deleting..." : "Delete"}
+                </button>
               </div>
-            </div>
-            <p className="text-slate-700 mb-6">
-              Are you sure you want to delete{" "}
-              <span className="font-semibold">"{selectedDoc?.title}"</span>?
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setIsDeleteModalOpen(false)}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-medium hover:bg-slate-50 transition"
-              >
-                Keep it
-              </button>
-              <button
-                onClick={handleConfirmDelete}
-                disabled={deleting}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition disabled:opacity-50"
-              >
-                {deleting ? "Deleting..." : "Delete"}
-              </button>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
