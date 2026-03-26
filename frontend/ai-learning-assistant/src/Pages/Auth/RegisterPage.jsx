@@ -28,6 +28,7 @@ const RegisterPage = () => {
         err.message || "Failed to register. Please try again.";
       setError(errorMessage);
       toast.error(errorMessage);
+      console.log(err);
     } finally {
       setLoading(false);
     }
